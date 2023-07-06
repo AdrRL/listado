@@ -21,6 +21,56 @@ const initStore = () => {
     console.log('Init store');
 }
 
+const loadStore = () => {
+    throw new Error('No implementado');
+}
+
+const getTodos = (filter = Filters.All) => {
+    switch(filter){
+        case Filters.All:
+            return [...state.todos];    //Le mando vector
+        case Filters.completed:
+            return state.todos.filter(todo => todo.done);   // todo.done === true // true === true 
+        case Filters.completed:
+            return state.todos.filter(todo => !todo.done);
+        default:
+            throw new Error(`La opción mandada ${filter} no es válida`);
+        
+    }
+}
+
+const addTodo = ( description ) => {
+    throw new Error('No implementado');
+}
+
+const toggleTodo = (todoId) => {
+    throw new Error('No implementado');
+}
+
+const deleteTodo = (todoId) => {
+    throw new Error('No implementado');
+}
+
+const deleteCompleted = (todoId) => {
+    throw new Error('No implementado');
+}
+
+const setFiltrer = (newFiltrer = Filters.All) => {
+    throw new Error('No implementado');
+}
+
+const getCurrentFiltrer = () => {
+    throw new Error('No implementado');
+}
+
 export default {    //Se pueden poner varios
+    addTodo,
+    deleteCompleted,
+    deleteTodo,
+    getCurrentFiltrer,
+    getTodos,
     initStore,
+    loadStore,
+    setFiltrer,
+    toggleTodo,
 }
