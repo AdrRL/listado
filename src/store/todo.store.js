@@ -12,6 +12,8 @@ const state = {
         new Todo("A"),
         new Todo("B"),
         new Todo("C"),
+        new Todo('D'),
+        new Todo('E'),
     ],
     filter: Filters.All,    //Parecido al concepto de enumeración
 }
@@ -40,27 +42,34 @@ const getTodos = (filter = Filters.All) => {
 }
 
 const addTodo = ( description ) => {
-    throw new Error('No implementado');
+    if (!description) throw new Error('La descripción debe tener algún valor');
+
+    state.todos.push(new Todo(description));
 }
 
 const toggleTodo = (todoId) => {
-    throw new Error('No implementado');
+    state.todos = state.todos.map(todo => { //Permite recorrerlo
+        if (todo.id === todo.Id){
+            todo.done = !todo.done;
+        }
+        return todo;
+    });
 }
 
 const deleteTodo = (todoId) => {
-    throw new Error('No implementado');
+    state.todos = state.todos.filter(todo => todo.Id != todo.id);
 }
 
 const deleteCompleted = (todoId) => {
-    throw new Error('No implementado');
+    state.todos = state.todos.filter(todo => todo.done);
 }
 
 const setFiltrer = (newFiltrer = Filters.All) => {
-    throw new Error('No implementado');
+    state.filter = newFiltrer;  //Se podría filtrar que debe estar en la enumeración Object.keys(Filters).includes(newFilter)
 }
 
 const getCurrentFiltrer = () => {
-    throw new Error('No implementado');
+    return state.filter;
 }
 
 export default {    //Se pueden poner varios
