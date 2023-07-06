@@ -1,7 +1,7 @@
 import { Todo } from '../todos/models/todo.model';
 
 
-const Filters = {
+export const Filters = {
     All: 'all',
     completed: 'Completed',
     pending: 'Pending',
@@ -19,13 +19,24 @@ const state = {
 }
 
 const initStore = () => {
-    console.log(state);
+    //console.log(state);
+    loadStore();
     console.log('Init store');
 }
 
 const loadStore = () => {
-    throw new Error('No implementado');
+    if (!localStorage.getItem('state')) return;
+
+    //console.log(JSON.parse(localStorage.getItem('state')));
+    const {todos = [], filter = Filters.All} = JSON.parse(localStorage.getItem('state'));
+    state.todos = todos;
+    state.filter = filter;
 }
+
+const saveStateToLocalStorage = () => {
+    localStorage.setItem('secreto', 'Quien encuentre esto primero le hago bizum de 1€');
+    localStorage.setItem('state', JSON.stringify(state));
+};
 
 const getTodos = (filter = Filters.All) => {
     switch(filter){
@@ -33,7 +44,7 @@ const getTodos = (filter = Filters.All) => {
             return [...state.todos];    //Le mando vector
         case Filters.completed:
             return state.todos.filter(todo => todo.done);   // todo.done === true // true === true 
-        case Filters.completed:
+        case Filters.pending:
             return state.todos.filter(todo => !todo.done);
         default:
             throw new Error(`La opción mandada ${filter} no es válida`);
@@ -45,6 +56,8 @@ const addTodo = ( description ) => {
     if (!description) throw new Error('La descripción debe tener algún valor');
 
     state.todos.push(new Todo(description));
+
+    saveStateToLocalStorage();
 }
 
 const toggleTodo = (todoId) => {
@@ -54,18 +67,26 @@ const toggleTodo = (todoId) => {
         }
         return todo;
     });
+
+    saveStateToLocalStorage();
 }
 
 const deleteTodo = (todoId) => {
-    state.todos = state.todos.filter(todo => todo.Id != todo.id);
+    state.todos = state.todos.filter(todo => todoId != todo.id);
+
+    saveStateToLocalStorage();
 }
 
-const deleteCompleted = (todoId) => {
-    state.todos = state.todos.filter(todo => todo.done);
+const deleteCompleted = () => {
+    state.todos = state.todos.filter(todo => !todo.done);
+
+    saveStateToLocalStorage();
 }
 
 const setFiltrer = (newFiltrer = Filters.All) => {
     state.filter = newFiltrer;  //Se podría filtrar que debe estar en la enumeración Object.keys(Filters).includes(newFilter)
+
+    saveStateToLocalStorage();
 }
 
 const getCurrentFiltrer = () => {
