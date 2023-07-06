@@ -49,7 +49,7 @@ const addTodo = ( description ) => {
 
 const toggleTodo = (todoId) => {
     state.todos = state.todos.map(todo => { //Permite recorrerlo
-        if (todo.id === todo.Id){
+        if (todo.id === todoId){
             todo.done = !todo.done;
         }
         return todo;

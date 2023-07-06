@@ -29,9 +29,24 @@ export const App = (elementId) => {
 
     //Referencias HTML
     const newDescripcionInput = document.querySelector(ElementIds.NewTodoInput);
+    const todoListUL = document.querySelector(ElementIds.TodoList);
 
     //Listeners
     newDescripcionInput.addEventListener('keyup', (evento) => {
-        console.log(evento);
-    })
+        //console.log(evento.target.value )
+        if (evento.keyCode !== 13) return;  //Solo acaba si pulso enter
+        if (evento.target.value.trim().length === 0 ) return;     //trim elimina los espacios
+
+        todoStore.addTodo(evento.target.value);
+        displayTodos();
+        evento.target.value = '';
+    }); 
+
+    todoListUL.addEventListener('click', (evento) => {
+        //console.log(evento.target);
+
+        const element = evento.target.closest('[data-id]') //Busque el padre más cercano con este elemento para poder identificar
+        todoStore.toggleTodo(element.getAttribute('data-id'));
+        displayTodos();
+    });
 }
